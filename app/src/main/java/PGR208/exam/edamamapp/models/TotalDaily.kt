@@ -1,0 +1,41 @@
+package PGR208.exam.edamamapp.models
+
+import java.io.Serializable
+
+data class TotalDaily (
+    val sugarAdded : Nutrient,
+    val calcium : Nutrient,
+    val carbohydrateNet: Nutrient,
+    val carbohydrateByDifference: Nutrient,
+    val cholesterol: Nutrient,
+    val energy: Nutrient,
+    val fattyAcidsMonosaturated: Nutrient,
+    val fattyAcidsPolysaturated: Nutrient,
+    val fattyAcidsSaturated: Nutrient,
+    val fattyAcidsTrans: Nutrient,
+    val fiber: Nutrient,
+    val folateDFE: Nutrient,
+    val folateFood: Nutrient,
+    val folicAcid: Nutrient,
+    val iron: Nutrient,
+    val magnesium: Nutrient,
+    val nacin: Nutrient,
+    val phosphorus: Nutrient,
+    val potassium: Nutrient,
+    val protein: Nutrient,
+    val riboflavin: Nutrient,
+    val sodium: Nutrient,
+    val sugarAlcohol: Nutrient,
+    val sugar: Nutrient,
+    val thiamin: Nutrient,
+    val totalLipid: Nutrient,
+    val vitA: Nutrient,
+    val vitB12: Nutrient,
+    val vitB6A: Nutrient,
+    val vitC: Nutrient,
+    val vitD: Nutrient,
+    val vitE: Nutrient,
+    val vitK: Nutrient,
+    val water: Nutrient,
+    val zinc: Nutrient
+        ): Serializable

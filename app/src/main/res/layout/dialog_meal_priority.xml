@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/main_content_padding"
+    android:gravity="center"
+    >
+
+    <TextView
+        android:id="@+id/tv_meal_breakfast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Breakfast"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:padding="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_meal_brunch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Brunch"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:padding="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_meal_lunch_dinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lunch/Dinner"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:padding="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_meal_snack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Snack"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:padding="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_meal_teatime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Teatime"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:padding="20dp"
+        />
+
+</LinearLayout>
