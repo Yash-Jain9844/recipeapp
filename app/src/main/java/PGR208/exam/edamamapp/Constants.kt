@@ -7,8 +7,8 @@ import android.os.Build
 
 object Constants {
 
-    const val APP_KEY: String = "cb831881c277fe8f7011fd8fca7b5db2" //"e045baf5336d7b80d99f0aa32050cbce"//"c5c25a28e09370d20e378fd1206917e9"
-    const val APP_ID: String = "14edf83e"//4d29f052" "5751be8b"
+    const val APP_KEY: String = //implement your own app key
+    const val APP_ID: String = //implement your own app id
     const val BASE_URL: String = "https://api.edamam.com/"
 
     const val INTERNET_PERMISSION_REQUEST_CODE = 1
