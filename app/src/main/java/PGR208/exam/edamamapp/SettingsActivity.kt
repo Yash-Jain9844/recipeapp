@@ -67,7 +67,9 @@ class SettingsActivity : AppCompatActivity() {
                     )
                 )
                 applyTheme(themePreference)
-                finish()
+                // Recreate activity to ensure theme is applied immediately
+                recreate()
+                // finish() // Remove this to allow immediate theme application without closing
             }
         }
     }

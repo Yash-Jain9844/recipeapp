@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 
 class FavoritesActivity : AppCompatActivity() {
     private var binding: ActivityFavoritesBinding? = null
+    private var adapter: FavoritesAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +20,7 @@ class FavoritesActivity : AppCompatActivity() {
 
         binding?.rvFavorites?.layoutManager = LinearLayoutManager(this)
 
-        val adapter = FavoritesAdapter(
+        adapter = FavoritesAdapter(
             context = this@FavoritesActivity,
             favoritesDao = favoritesDao
         )
@@ -28,7 +29,7 @@ class FavoritesActivity : AppCompatActivity() {
         // Observe favorites
         lifecycleScope.launch {
             favoritesDao.getAllFavorites().let { favorites ->
-                adapter.updateData(favorites)
+                adapter?.updateData(favorites)
             }
         }
 
@@ -36,6 +37,8 @@ class FavoritesActivity : AppCompatActivity() {
         binding?.btnClearFavorites?.setOnClickListener {
             lifecycleScope.launch {
                 favoritesDao.deleteAll()
+                // Update the adapter with an empty list to reflect the cleared state
+                adapter?.updateData(emptyList())
             }
         }
     }
@@ -43,5 +46,6 @@ class FavoritesActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         binding = null
+        adapter = null
     }
 }

@@ -10,5 +10,17 @@
         <item name="android:textColor">@color/text_color_primary</item>
         <item name="android:textColorHint">@color/text_color_hint</item>
         <item name="android:editTextColor">@color/text_color_primary</item>
+        <!-- ActionBar title text color -->
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+    </style>
+
+    <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="titleTextColor">@color/text_color_primary</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleTextStyle</item>
+    </style>
+
+    <style name="ActionBarTitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/text_color_primary</item>
     </style>
 </resources>

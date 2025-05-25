@@ -31,13 +31,13 @@ class DatabaseApp : Application() {
             "settings_database"
         ).build()
 
-        // Apply theme on app startup
+        // Apply dark theme by default if no preference is set
         GlobalScope.launch {
-            val themePreference = dbSettings.settingsDao().fetchThemePreference() ?: "system"
+            val themePreference = dbSettings.settingsDao().fetchThemePreference() ?: "dark"
             when (themePreference) {
                 "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) // Default to dark
             }
         }
     }

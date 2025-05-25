@@ -16,6 +16,7 @@
         android:gravity="center"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/text_color_primary"
         android:layout_marginBottom="16dp" />
 
     <TextView
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="Desired Diet"
         android:textSize="16sp"
+        android:textColor="@color/text_color_primary"
         android:layout_marginBottom="8dp" />
 
     <EditText
@@ -30,6 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter desired diet"
+        android:textColor="@color/text_color_primary"
+        android:textColorHint="@color/text_color_hint"
         android:layout_marginBottom="16dp" />
 
     <TextView
@@ -37,6 +41,7 @@
         android:layout_height="wrap_content"
         android:text="Meal Priority"
         android:textSize="16sp"
+        android:textColor="@color/text_color_primary"
         android:layout_marginBottom="8dp" />
 
     <EditText
@@ -44,6 +49,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter meal priority"
+        android:textColor="@color/text_color_primary"
+        android:textColorHint="@color/text_color_hint"
         android:layout_marginBottom="16dp" />
 
     <TextView
@@ -51,6 +58,7 @@
         android:layout_height="wrap_content"
         android:text="Max Search History Items"
         android:textSize="16sp"
+        android:textColor="@color/text_color_primary"
         android:layout_marginBottom="8dp" />
 
     <EditText
@@ -59,6 +67,8 @@
         android:layout_height="wrap_content"
         android:hint="Enter max search history items"
         android:inputType="number"
+        android:textColor="@color/text_color_primary"
+        android:textColorHint="@color/text_color_hint"
         android:layout_marginBottom="16dp" />
 
     <TextView
@@ -66,6 +76,7 @@
         android:layout_height="wrap_content"
         android:text="Theme"
         android:textSize="16sp"
+        android:textColor="@color/text_color_primary"
         android:layout_marginBottom="8dp" />
 
     <Spinner

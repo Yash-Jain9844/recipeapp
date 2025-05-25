@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".SearchHistoryActivity"
     android:orientation="vertical"
-    android:background="@color/main_screen_content_background"
-    >
+    android:background="@color/main_screen_content_background">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,8 +15,8 @@
         android:gravity="center"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginTop="20sp"
-        />
+        android:textColor="@color/text_color_primary"
+        android:layout_marginTop="20sp" />
 
     <Button
         android:id="@+id/btnClearHistory"
@@ -25,13 +25,11 @@
         android:text="Clear Search History"
         android:layout_margin="16dp"/>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_recipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/recipe_item"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </LinearLayout>

@@ -52,10 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/text_color_primary"
-            android:textColorHint="@color/text_color_hint"
-            android:backgroundTint="@color/text_color_primary" />
+            android:layout_marginEnd="10dp" />
 
         <Button
             android:id="@+id/btn_search"

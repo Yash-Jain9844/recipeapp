@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
@@ -34,16 +35,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        // Initialize RecyclerView
+        binding?.rvRecipe?.layoutManager = LinearLayoutManager(this)
+
         // Clear search history on app start
         val searchHistoryDao = (application as DatabaseApp).dbSearchHistory.searchHistoryDao()
         lifecycleScope.launch {
             searchHistoryDao.deleteAll()
-        }
-
-        if (isPermissionGranted()) {
-            setupUI()
-        } else {
-            requestInternetPermission()
         }
 
         val settingsDao = (application as DatabaseApp).dbSettings.settingsDao()
@@ -51,12 +49,19 @@ class MainActivity : AppCompatActivity() {
             if (settingsDao.getRowCount() == 0) {
                 settingsDao.insert(
                     SettingsEntity(
-                        desiredDiet = "None",
+                        desiredDiet = "Cheese", // Default to Cheese
                         mealPriority = "None",
                         maxSearchHistoryItems = 10
                     )
                 )
             }
+            maxSearchHistoryItems = settingsDao.fetchMaxSearchHistoryItems().firstOrNull() ?: 10
+        }
+
+        if (isPermissionGranted()) {
+            setupUI()
+        } else {
+            requestInternetPermission()
         }
     }
 
@@ -69,9 +74,8 @@ class MainActivity : AppCompatActivity() {
         val settingsDao = (application as DatabaseApp).dbSettings.settingsDao()
         val searchHistoryDao = (application as DatabaseApp).dbSearchHistory.searchHistoryDao()
 
-        lifecycleScope.launch {
-            maxSearchHistoryItems = settingsDao.fetchMaxSearchHistoryItems().firstOrNull() ?: 10
-        }
+        // Load meals automatically with a default query
+        searchMeals("cheese") // Reliable vegetarian query with many results
 
         searchBtn = binding?.btnSearch
         searchBtn?.setOnClickListener {
@@ -79,15 +83,13 @@ class MainActivity : AppCompatActivity() {
                 val inputQuery = binding?.tvSearchInput?.text.toString().trim()
 
                 val finalQuery = if (inputQuery.isEmpty()) {
-                    val diet = settingsDao.fetchDesiredDietOnce() ?: ""
-                    val meal = settingsDao.fetchMealPriorityOnce() ?: ""
-                    "$diet $meal".trim()
+                    settingsDao.fetchDesiredDietOnce() ?: "cheese"
                 } else {
                     inputQuery
                 }
 
                 if (finalQuery.isEmpty()) {
-                    Toast.makeText(this@MainActivity, "No input or preferences", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Please enter a search query", Toast.LENGTH_SHORT).show()
                 } else {
                     searchMeals(finalQuery)
                 }
@@ -122,11 +124,14 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun searchMeals(query: String) {
+    private fun searchMeals(query: String, retryCount: Int = 0) {
         if (!Constants.isNetworkAvailable(this)) {
+            Log.e("MainActivity", "No internet connection")
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
             return
         }
+
+        Log.d("MainActivity", "Searching meals with: $query")
 
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
@@ -140,6 +145,7 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<MealResponse>, response: Response<MealResponse>) {
                 if (response.isSuccessful) {
                     val meals = response.body()?.meals
+                    Log.d("MainActivity", "API response: Success, meals count: ${meals?.size ?: 0}")
                     if (!meals.isNullOrEmpty()) {
                         MealList.mealsList.clear()
                         MealList.mealsList.addAll(meals)
@@ -151,11 +157,11 @@ class MainActivity : AppCompatActivity() {
                             for (i in 0 until maxItems) {
                                 val meal = meals[i]
                                 val entity = SearchHistoryEntity(
-                                    image = meal.strMealThumb,
+                                    image = meal.strMealThumb ?: "",
                                     label = meal.strMeal,
-                                    dietLabel = meal.strCategory,
+                                    dietLabel = meal.strCategory ?: "",
                                     healthLabel = "",
-                                    mealType = meal.strCategory,
+                                    mealType = meal.strCategory ?: "",
                                     url = meal.strSource ?: ""
                                 )
                                 searchHistoryDao.insert(entity)
@@ -178,26 +184,39 @@ class MainActivity : AppCompatActivity() {
                         )
                         binding?.rvRecipe?.adapter = adapter
                     } else {
-                        Toast.makeText(this@MainActivity, "No meals found", Toast.LENGTH_SHORT).show()
+                        // Retry with fallback query if no meals found
+                        if (retryCount == 0) {
+                            Log.w("MainActivity", "No meals found for query: $query, retrying with 'salad'")
+                            searchMeals("salad", retryCount + 1)
+                        } else {
+                            Log.w("MainActivity", "No meals found for query: $query")
+                            Toast.makeText(this@MainActivity, "No meals found for $query", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 } else {
-                    Log.e("API_ERROR", "Code: ${response.code()} Message: ${response.message()}")
+                    Log.e("MainActivity", "API error: Code ${response.code()}, Message: ${response.message()}")
+                    Toast.makeText(this@MainActivity, "API error: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<MealResponse>, t: Throwable) {
-                Log.e("API_FAILURE", t.message ?: "Unknown error")
-                Toast.makeText(this@MainActivity, "API failure", Toast.LENGTH_SHORT).show()
+                Log.e("MainActivity", "API failure: ${t.message ?: "Unknown error"}")
+                Toast.makeText(this@MainActivity, "Failed to load meals: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == Constants.INTERNET_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 setupUI()
             } else {
-                Toast.makeText(this, "No internet permission", Toast.LENGTH_SHORT).show()
+                Log.e("MainActivity", "Internet permission denied")
+                Toast.makeText(this, "Internet permission required", Toast.LENGTH_LONG).show()
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
