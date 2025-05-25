@@ -3,9 +3,9 @@ package PGR208.exam.edamamapp.Database_Favorites
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "favorites-table")
-data class FavoritesEntity (
+@Entity(tableName = "favorites_entity")
+data class FavoritesEntity(
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
-    var recipeName: String = ""
-        )
+    val id: Int = 0,
+    val label: String
+)

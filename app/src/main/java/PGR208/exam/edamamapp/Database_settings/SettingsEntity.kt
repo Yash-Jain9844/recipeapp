@@ -1,18 +1,20 @@
 package PGR208.exam.edamamapp.Database_settings
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "settings-table")
-data class SettingsEntity (
+@Entity(tableName = "settings_entity")
+data class SettingsEntity(
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    val id: Int = 0,
 
-    var calorieIntake: Int = 0,
+    @ColumnInfo(name = "desiredDiet")
+    val desiredDiet: String = "None",
 
-    var maxSearchHistoryItems: Int = 0,
+    @ColumnInfo(name = "mealPriority")
+    val mealPriority: String = "None",
 
-    var desiredDiet: String = "",
-
-    var mealPriority: String = ""
-    )
+    @ColumnInfo(name = "maxSearchHistoryItems")
+    val maxSearchHistoryItems: Int = 10
+)

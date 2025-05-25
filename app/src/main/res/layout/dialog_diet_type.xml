@@ -4,73 +4,55 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/main_content_padding"
-    android:gravity="center"
-    >
+    android:gravity="center">
 
     <TextView
         android:id="@+id/tv_diet_balanced"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Balanced"
+        android:text="Beef"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="30sp"
-        android:padding="20dp"
-        />
+        android:padding="20dp"/>
 
     <TextView
         android:id="@+id/tv_diet_high_fiber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="High-Fiber"
+        android:text="Chicken"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="30sp"
-        android:padding="20dp"
-        />
+        android:padding="20dp"/>
 
     <TextView
         android:id="@+id/tv_diet_high_protein"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="High-Protein"
+        android:text="Seafood"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="30sp"
-        android:padding="20dp"
-        />
+        android:padding="20dp"/>
 
     <TextView
         android:id="@+id/tv_diet_low_carb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Low-Carb"
+        android:text="Vegetarian"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="30sp"
-        android:padding="20dp"
-        />
+        android:padding="20dp"/>
 
     <TextView
         android:id="@+id/tv_diet_low_fat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Low-Fat"
+        android:text="Dessert"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="30sp"
-        android:padding="20dp"
-        />
-
-    <TextView
-        android:id="@+id/tv_diet_low_sodium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Low-Sodium"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:padding="20dp"
-        />
-
+        android:padding="20dp"/>
 </LinearLayout>

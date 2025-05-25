@@ -15,12 +15,16 @@ interface SearchHistoryDao {
     @Delete
     suspend fun delete(searchHistoryEntity: SearchHistoryEntity)
 
-    @Query("DELETE FROM `search-history-table`")
+    @Query("SELECT * FROM search_history_entity")
+    suspend fun fetchAllOnce(): List<SearchHistoryEntity>
+
+    @Query("DELETE FROM search_history_entity")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM `search-history-table`")
-    fun fetchAllSearchHistoryEntities(): Flow<List<SearchHistoryEntity>>
+    @Query("SELECT * FROM search_history_entity ORDER BY id DESC")
+    fun fetchAllSearchHistoryEntities(): kotlinx.coroutines.flow.Flow<List<SearchHistoryEntity>>
 
-    @Query("DELETE FROM `search-history-table` WHERE id = :id")
-    fun deleteById(id: Int)
+
+
+
 }
