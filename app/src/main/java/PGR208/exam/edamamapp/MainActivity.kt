@@ -26,12 +26,19 @@ class MainActivity : AppCompatActivity() {
     private var searchBtn: Button? = null
     private var settingsBtn: Button? = null
     private var searchHistoryBtn: Button? = null
+    private var favoritesBtn: Button? = null
     private var maxSearchHistoryItems: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
+        // Clear search history on app start
+        val searchHistoryDao = (application as DatabaseApp).dbSearchHistory.searchHistoryDao()
+        lifecycleScope.launch {
+            searchHistoryDao.deleteAll()
+        }
 
         if (isPermissionGranted()) {
             setupUI()
@@ -95,6 +102,11 @@ class MainActivity : AppCompatActivity() {
         searchHistoryBtn = binding?.btnSearchHistory
         searchHistoryBtn?.setOnClickListener {
             startActivity(Intent(this, SearchHistoryActivity::class.java))
+        }
+
+        favoritesBtn = binding?.btnFavorites
+        favoritesBtn?.setOnClickListener {
+            startActivity(Intent(this, FavoritesActivity::class.java))
         }
     }
 

@@ -5,85 +5,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity"
-    android:padding="@dimen/main_content_padding"
     android:orientation="vertical"
+    android:padding="16dp"
     android:background="@color/main_screen_content_background">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/settings"
+        android:text="SETTINGS"
         android:gravity="center"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20sp"
-        android:orientation="horizontal">
+        android:text="Desired Diet"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="Maximum search history items"/>
-
-        <EditText
-            android:id="@+id/et_history_items_input"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:inputType="number"/>
-    </LinearLayout>
-
-    <LinearLayout
+    <EditText
+        android:id="@+id/et_desired_diet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22sp"
-        android:orientation="horizontal">
+        android:hint="Enter desired diet"
+        android:layout_marginBottom="16dp" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="Desired diet type"/>
-
-        <TextView
-            android:id="@+id/tv_dropdown_diet"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Diet type..."/>
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20sp"
-        android:orientation="horizontal">
+        android:text="Meal Priority"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="Priority"/>
+    <EditText
+        android:id="@+id/et_meal_priority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter meal priority"
+        android:layout_marginBottom="16dp" />
 
-        <TextView
-            android:id="@+id/tv_dropdown_priority"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Meal Priority..."/>
-    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Max Search History Items"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/et_max_search_history_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter max search history items"
+        android:inputType="number"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Theme"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp" />
+
+    <Spinner
+        android:id="@+id/spinner_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
 
     <Button
-        android:id="@+id/btn_save"
-        android:layout_marginTop="20sp"
+        android:id="@+id/btn_save_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save"/>
+        android:text="Save Settings" />
+
 </LinearLayout>

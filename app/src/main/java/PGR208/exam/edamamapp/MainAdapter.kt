@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import PGR208.exam.edamamapp.models.Meal
 import PGR208.exam.edamamapp.databinding.RecipeItemBinding
 import android.annotation.SuppressLint
-import android.graphics.Color
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -33,16 +32,15 @@ class MainAdapter(
             itemBinding.tvTitle.text = meal.strMeal
             itemBinding.tvDietLabel1.text = meal.strCategory
             itemBinding.tvHealthLabel1.text = meal.strArea
+            itemBinding.tvMealLabel.text = meal.strCategory
 
-            // Set default heart color
             GlobalScope.launch {
-                val isFavorite = favoritesDao.isFavorite(meal.strMeal)  // 👈 You'll define this method next
-                itemBinding.ibFavorite.setColorFilter(
-                    if (isFavorite) Color.RED else Color.GRAY
+                val isFavorite = favoritesDao.isFavorite(meal.strMeal)
+                itemBinding.ibFavorite.setImageResource(
+                    if (isFavorite) R.drawable.ic_favorite_filled else R.drawable.ic_favorite_border
                 )
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
@@ -61,15 +59,23 @@ class MainAdapter(
                 val isFav = favoritesDao.isFavorite(recipeLabel)
 
                 if (!isFav) {
-                    favoritesDao.insert(FavoritesEntity(0, recipeLabel))
-                    holder.ibFavorite.setColorFilter(Color.RED)
+                    favoritesDao.insert(
+                        FavoritesEntity(
+                            label = recipeLabel,
+                            image = meal.strMealThumb,
+                            dietLabel = meal.strCategory,
+                            healthLabel = meal.strArea,
+                            mealType = meal.strCategory,
+                            url = meal.strSource ?: ""
+                        )
+                    )
+                    holder.ibFavorite.setImageResource(R.drawable.ic_favorite_filled)
                 } else {
-                    favoritesDao.delete(FavoritesEntity(0, recipeLabel))
-                    holder.ibFavorite.setColorFilter(Color.GRAY)
+                    favoritesDao.delete(FavoritesEntity(label = recipeLabel))
+                    holder.ibFavorite.setImageResource(R.drawable.ic_favorite_border)
                 }
             }
         }
-
 
         holder.btnSelectRecipe.setOnClickListener {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(meal.strSource ?: ""))
@@ -80,5 +86,4 @@ class MainAdapter(
     override fun getItemCount(): Int {
         return mealsList.size
     }
-
 }

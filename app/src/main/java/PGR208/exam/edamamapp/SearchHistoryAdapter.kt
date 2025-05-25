@@ -42,6 +42,13 @@ class SearchHistoryAdapter(
             itemBinding.tvHealthLabel1.text = searchHistoryEntity.healthLabel
             itemBinding.tvMealLabel.text = searchHistoryEntity.mealType
 
+            GlobalScope.launch {
+                val isFavorite = favoritesDao.isFavorite(searchHistoryEntity.label)
+                itemBinding.ibFavorite.setImageResource(
+                    if (isFavorite) R.drawable.ic_favorite_filled else R.drawable.ic_favorite_border
+                )
+            }
+
             btnSelectRecipe.setOnClickListener {
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(searchHistoryEntity.url))
                 context.startActivity(browserIntent)
@@ -49,14 +56,21 @@ class SearchHistoryAdapter(
 
             ibFavorite.setOnClickListener {
                 GlobalScope.launch {
-                    val entity = FavoritesEntity(0, searchHistoryEntity.label)
+                    val entity = FavoritesEntity(
+                        label = searchHistoryEntity.label,
+                        image = searchHistoryEntity.image,
+                        dietLabel = searchHistoryEntity.dietLabel,
+                        healthLabel = searchHistoryEntity.healthLabel,
+                        mealType = searchHistoryEntity.mealType,
+                        url = searchHistoryEntity.url
+                    )
                     val isFav = favoritesDao.isFavorite(searchHistoryEntity.label)
                     if (!isFav) {
                         favoritesDao.insert(entity)
-                        ibFavorite.setColorFilter(android.graphics.Color.RED)
+                        ibFavorite.setImageResource(R.drawable.ic_favorite_filled)
                     } else {
                         favoritesDao.delete(entity)
-                        ibFavorite.setColorFilter(android.graphics.Color.GRAY)
+                        ibFavorite.setImageResource(R.drawable.ic_favorite_border)
                     }
                 }
             }

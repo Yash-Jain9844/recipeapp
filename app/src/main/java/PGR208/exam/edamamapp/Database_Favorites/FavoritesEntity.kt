@@ -7,5 +7,10 @@ import androidx.room.PrimaryKey
 data class FavoritesEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val label: String
+    val label: String,
+    val image: String = "",
+    val dietLabel: String = "",
+    val healthLabel: String = "",
+    val mealType: String = "",
+    val url: String = ""
 )

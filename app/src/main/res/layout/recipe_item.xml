@@ -1,109 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="@dimen/main_content_padding"
-    android:background="@color/main_screen_content_background"
-    >
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="@dimen/card_content_padding"
-        >
+    android:padding="8dp">
 
-        <ImageView
-            android:id="@+id/iv_dish"
-            android:layout_width="match_parent"
-            android:layout_height="80sp"
-            android:src="@drawable/image__3_"
-            />
-
-        <Button
-            android:id="@+id/btn_select_recipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/select"
-            />
-
-
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/iv_dish"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.5"
+        android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="@dimen/card_content_padding"
-        >
+        android:paddingStart="8dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="RECIPE NAME"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                />
-
-        </LinearLayout>
-
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/card_content_padding">
+            android:textColor="@color/text_color_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_diet_label_1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="DietLabel"/>
-
-            <TextView
-                android:id="@+id/tv_meal_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="MealLabel"/>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_diet_label_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/card_content_padding">
+            android:textColor="@color/text_color_primary"
+            android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tv_health_label_1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="HealthLabel"/>
+        <TextView
+            android:id="@+id/tv_health_label_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_primary"
+            android:textSize="14sp" />
 
-            <ImageButton
-                android:id="@+id/ib_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:src="@drawable/heart__1_"
-                android:background="@color/main_screen_content_background"
-                />
+        <TextView
+            android:id="@+id/tv_meal_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_primary"
+            android:textSize="14sp" />
 
-        </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/ib_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_favorite_filled"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@color/text_color_primary" />
+
+        <Button
+            android:id="@+id/btn_select_recipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select" />
+
+    </LinearLayout>
 
 </LinearLayout>
