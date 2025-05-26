@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -37,10 +39,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        // Initialize RecyclerView
         binding?.rvRecipe?.layoutManager = LinearLayoutManager(this)
 
-        // Clear search history on app start
         val searchHistoryDao = (application as DatabaseApp).dbSearchHistory.searchHistoryDao()
         lifecycleScope.launch {
             searchHistoryDao.deleteAll()
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             if (settingsDao.getRowCount() == 0) {
                 settingsDao.insert(
                     SettingsEntity(
-                        desiredDiet = "Cheese", // Default to Cheese
+                        desiredDiet = "Cheese",
                         mealPriority = "None",
                         maxSearchHistoryItems = 10
                     )
@@ -67,6 +67,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_generate_recipe -> {
+                startActivity(Intent(this, GenerateRecipeActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         binding = null
@@ -76,8 +91,7 @@ class MainActivity : AppCompatActivity() {
         val settingsDao = (application as DatabaseApp).dbSettings.settingsDao()
         val searchHistoryDao = (application as DatabaseApp).dbSearchHistory.searchHistoryDao()
 
-        // Load meals automatically with a default query
-        searchMeals("cheese") // Reliable vegetarian query with many results
+        searchMeals("cheese")
 
         searchBtn = binding?.btnSearch
         searchBtn?.setOnClickListener {
@@ -136,7 +150,6 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("MainActivity", "Starting search for: $query, showing ProgressBar")
 
-        // Show loader and clear RecyclerView
         binding?.progressBar?.visibility = View.VISIBLE
         binding?.rvRecipe?.adapter = null
 
@@ -151,10 +164,8 @@ class MainActivity : AppCompatActivity() {
         call.enqueue(object : Callback<MealResponse> {
             override fun onResponse(call: Call<MealResponse>, response: Response<MealResponse>) {
                 lifecycleScope.launch {
-                    // Ensure ProgressBar is visible for at least 500ms
                     delay(500)
 
-                    // Hide loader
                     binding?.progressBar?.visibility = View.GONE
                     Log.d("MainActivity", "API response received, hiding ProgressBar")
 
@@ -199,36 +210,33 @@ class MainActivity : AppCompatActivity() {
                             )
                             binding?.rvRecipe?.adapter = adapter
                         } else {
-                            // Retry with fallback query if no meals found
                             if (retryCount == 0) {
                                 Log.w("MainActivity", "No meals found for query: $query, retrying with 'salad'")
                                 searchMeals("salad", retryCount + 1)
                             } else {
                                 Log.w("MainActivity", "No meals found for query: $query")
                                 Toast.makeText(this@MainActivity, "No meals found for $query", Toast.LENGTH_SHORT).show()
-                                binding?.rvRecipe?.adapter = null // Ensure RecyclerView remains empty
+                                binding?.rvRecipe?.adapter = null
                             }
                         }
                     } else {
                         Log.e("MainActivity", "API error: Code ${response.code()}, Message: ${response.message()}")
                         Toast.makeText(this@MainActivity, "API error: ${response.message()}", Toast.LENGTH_SHORT).show()
-                        binding?.rvRecipe?.adapter = null // Ensure RecyclerView remains empty
+                        binding?.rvRecipe?.adapter = null
                     }
                 }
             }
 
             override fun onFailure(call: Call<MealResponse>, t: Throwable) {
                 lifecycleScope.launch {
-                    // Ensure ProgressBar is visible for at least 500ms
                     delay(500)
 
-                    // Hide loader
                     binding?.progressBar?.visibility = View.GONE
                     Log.d("MainActivity", "API failure, hiding ProgressBar")
 
                     Log.e("MainActivity", "API failure: ${t.message ?: "Unknown error"}")
                     Toast.makeText(this@MainActivity, "Failed to load meals: ${t.message}", Toast.LENGTH_SHORT).show()
-                    binding?.rvRecipe?.adapter = null // Ensure RecyclerView remains empty
+                    binding?.rvRecipe?.adapter = null
                 }
             }
         })
