@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
@@ -128,10 +130,15 @@ class MainActivity : AppCompatActivity() {
         if (!Constants.isNetworkAvailable(this)) {
             Log.e("MainActivity", "No internet connection")
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
+            binding?.progressBar?.visibility = View.GONE
             return
         }
 
-        Log.d("MainActivity", "Searching meals with: $query")
+        Log.d("MainActivity", "Starting search for: $query, showing ProgressBar")
+
+        // Show loader and clear RecyclerView
+        binding?.progressBar?.visibility = View.VISIBLE
+        binding?.rvRecipe?.adapter = null
 
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
@@ -143,65 +150,86 @@ class MainActivity : AppCompatActivity() {
 
         call.enqueue(object : Callback<MealResponse> {
             override fun onResponse(call: Call<MealResponse>, response: Response<MealResponse>) {
-                if (response.isSuccessful) {
-                    val meals = response.body()?.meals
-                    Log.d("MainActivity", "API response: Success, meals count: ${meals?.size ?: 0}")
-                    if (!meals.isNullOrEmpty()) {
-                        MealList.mealsList.clear()
-                        MealList.mealsList.addAll(meals)
+                lifecycleScope.launch {
+                    // Ensure ProgressBar is visible for at least 500ms
+                    delay(500)
 
-                        lifecycleScope.launch {
-                            val searchHistoryDao = (application as DatabaseApp).dbSearchHistory.searchHistoryDao()
-                            val maxItems = minOf(maxSearchHistoryItems, meals.size)
+                    // Hide loader
+                    binding?.progressBar?.visibility = View.GONE
+                    Log.d("MainActivity", "API response received, hiding ProgressBar")
 
-                            for (i in 0 until maxItems) {
-                                val meal = meals[i]
-                                val entity = SearchHistoryEntity(
-                                    image = meal.strMealThumb ?: "",
-                                    label = meal.strMeal,
-                                    dietLabel = meal.strCategory ?: "",
-                                    healthLabel = "",
-                                    mealType = meal.strCategory ?: "",
-                                    url = meal.strSource ?: ""
-                                )
-                                searchHistoryDao.insert(entity)
-                            }
+                    if (response.isSuccessful) {
+                        val meals = response.body()?.meals
+                        Log.d("MainActivity", "API response: Success, meals count: ${meals?.size ?: 0}")
+                        if (!meals.isNullOrEmpty()) {
+                            MealList.mealsList.clear()
+                            MealList.mealsList.addAll(meals)
 
-                            val updatedEntries = searchHistoryDao.fetchAllOnce()
-                            if (updatedEntries.size > maxSearchHistoryItems) {
-                                val toDelete = updatedEntries.take(updatedEntries.size - maxSearchHistoryItems)
-                                for (entry in toDelete) {
-                                    searchHistoryDao.delete(entry)
+                            lifecycleScope.launch {
+                                val searchHistoryDao = (application as DatabaseApp).dbSearchHistory.searchHistoryDao()
+                                val maxItems = minOf(maxSearchHistoryItems, meals.size)
+
+                                for (i in 0 until maxItems) {
+                                    val meal = meals[i]
+                                    val entity = SearchHistoryEntity(
+                                        image = meal.strMealThumb ?: "",
+                                        label = meal.strMeal,
+                                        dietLabel = meal.strCategory ?: "",
+                                        healthLabel = "",
+                                        mealType = meal.strCategory ?: "",
+                                        url = meal.strSource ?: ""
+                                    )
+                                    searchHistoryDao.insert(entity)
+                                }
+
+                                val updatedEntries = searchHistoryDao.fetchAllOnce()
+                                if (updatedEntries.size > maxSearchHistoryItems) {
+                                    val toDelete = updatedEntries.take(updatedEntries.size - maxSearchHistoryItems)
+                                    for (entry in toDelete) {
+                                        searchHistoryDao.delete(entry)
+                                    }
                                 }
                             }
-                        }
 
-                        val adapter = MainAdapter(
-                            MealList.mealsList,
-                            this@MainActivity,
-                            (application as DatabaseApp).dbFavorites.favoritesDao(),
-                            (application as DatabaseApp).dbSettings.settingsDao()
-                        )
-                        binding?.rvRecipe?.adapter = adapter
-                    } else {
-                        // Retry with fallback query if no meals found
-                        if (retryCount == 0) {
-                            Log.w("MainActivity", "No meals found for query: $query, retrying with 'salad'")
-                            searchMeals("salad", retryCount + 1)
+                            val adapter = MainAdapter(
+                                MealList.mealsList,
+                                this@MainActivity,
+                                (application as DatabaseApp).dbFavorites.favoritesDao(),
+                                (application as DatabaseApp).dbSettings.settingsDao()
+                            )
+                            binding?.rvRecipe?.adapter = adapter
                         } else {
-                            Log.w("MainActivity", "No meals found for query: $query")
-                            Toast.makeText(this@MainActivity, "No meals found for $query", Toast.LENGTH_SHORT).show()
+                            // Retry with fallback query if no meals found
+                            if (retryCount == 0) {
+                                Log.w("MainActivity", "No meals found for query: $query, retrying with 'salad'")
+                                searchMeals("salad", retryCount + 1)
+                            } else {
+                                Log.w("MainActivity", "No meals found for query: $query")
+                                Toast.makeText(this@MainActivity, "No meals found for $query", Toast.LENGTH_SHORT).show()
+                                binding?.rvRecipe?.adapter = null // Ensure RecyclerView remains empty
+                            }
                         }
+                    } else {
+                        Log.e("MainActivity", "API error: Code ${response.code()}, Message: ${response.message()}")
+                        Toast.makeText(this@MainActivity, "API error: ${response.message()}", Toast.LENGTH_SHORT).show()
+                        binding?.rvRecipe?.adapter = null // Ensure RecyclerView remains empty
                     }
-                } else {
-                    Log.e("MainActivity", "API error: Code ${response.code()}, Message: ${response.message()}")
-                    Toast.makeText(this@MainActivity, "API error: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<MealResponse>, t: Throwable) {
-                Log.e("MainActivity", "API failure: ${t.message ?: "Unknown error"}")
-                Toast.makeText(this@MainActivity, "Failed to load meals: ${t.message}", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    // Ensure ProgressBar is visible for at least 500ms
+                    delay(500)
+
+                    // Hide loader
+                    binding?.progressBar?.visibility = View.GONE
+                    Log.d("MainActivity", "API failure, hiding ProgressBar")
+
+                    Log.e("MainActivity", "API failure: ${t.message ?: "Unknown error"}")
+                    Toast.makeText(this@MainActivity, "Failed to load meals: ${t.message}", Toast.LENGTH_SHORT).show()
+                    binding?.rvRecipe?.adapter = null // Ensure RecyclerView remains empty
+                }
             }
         })
     }

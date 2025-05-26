@@ -34,6 +34,7 @@ class SearchHistoryAdapter(
 
         val ibFavorite = itemBinding.ibFavorite
         val btnSelectRecipe = itemBinding.btnSelectRecipe
+        val ibShare = itemBinding.ibShare // Added share button
 
         fun bindItem(searchHistoryEntity: SearchHistoryEntity) {
             Glide.with(context).load(searchHistoryEntity.image).into(itemBinding.ivDish)
@@ -73,6 +74,16 @@ class SearchHistoryAdapter(
                         ibFavorite.setImageResource(R.drawable.ic_favorite_border)
                     }
                 }
+            }
+
+            // Share button click handler
+            ibShare.setOnClickListener {
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_SUBJECT, "Check out this recipe: ${searchHistoryEntity.label}")
+                    putExtra(Intent.EXTRA_TEXT, "${searchHistoryEntity.label}\n${searchHistoryEntity.url}")
+                }
+                context.startActivity(Intent.createChooser(shareIntent, "Share recipe"))
             }
         }
     }

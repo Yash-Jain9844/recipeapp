@@ -31,6 +31,7 @@ class FavoritesAdapter(
 
         val ibFavorite = itemBinding.ibFavorite
         val btnSelectRecipe = itemBinding.btnSelectRecipe
+        val ibShare = itemBinding.ibShare // Added share button
 
         fun bindItem(favorite: FavoritesEntity) {
             Glide.with(context).load(favorite.image).into(itemBinding.ivDish)
@@ -54,6 +55,16 @@ class FavoritesAdapter(
                     favoritesDao.delete(favorite)
                     itemBinding.ibFavorite.setImageResource(R.drawable.ic_favorite_border)
                 }
+            }
+
+            // Share button click handler
+            ibShare.setOnClickListener {
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_SUBJECT, "Check out this recipe: ${favorite.label}")
+                    putExtra(Intent.EXTRA_TEXT, "${favorite.label}\n${favorite.url}")
+                }
+                context.startActivity(Intent.createChooser(shareIntent, "Share recipe"))
             }
         }
     }

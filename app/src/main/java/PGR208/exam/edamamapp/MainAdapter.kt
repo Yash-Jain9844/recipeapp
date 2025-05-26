@@ -26,6 +26,7 @@ class MainAdapter(
     inner class MainViewHolder(private val itemBinding: RecipeItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         val ibFavorite = itemBinding.ibFavorite
         val btnSelectRecipe = itemBinding.btnSelectRecipe
+        val ibShare = itemBinding.ibShare // Added share button
 
         fun bindItem(meal: Meal) {
             Glide.with(context).load(meal.strMealThumb).into(itemBinding.ivDish)
@@ -80,6 +81,16 @@ class MainAdapter(
         holder.btnSelectRecipe.setOnClickListener {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(meal.strSource ?: ""))
             context.startActivity(browserIntent)
+        }
+
+        // Share button click handler
+        holder.ibShare.setOnClickListener {
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_SUBJECT, "Check out this recipe: ${meal.strMeal}")
+                putExtra(Intent.EXTRA_TEXT, "${meal.strMeal}\n${meal.strSource ?: ""}")
+            }
+            context.startActivity(Intent.createChooser(shareIntent, "Share recipe"))
         }
     }
 
