@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Defines color resources used throughout the app -->
 <resources>
     <!-- Existing colors from your project -->
+    <!-- Primary color for the app's theme -->
     <color name="colorPrimary">#6200EE</color>
+    <!-- Darker variant of the primary color for status bar, etc. -->
     <color name="colorPrimaryDark">#3700B3</color>
+    <!-- Accent color for buttons and highlights -->
     <color name="colorAccent">#03DAC5</color>
+    <!-- Background color for main screens -->
     <color name="main_screen_content_background">#FFFFFF</color>
+    <!-- Primary text color -->
     <color name="text_color_primary">#000000</color>
+    <!-- Hint text color for EditText -->
     <color name="text_color_hint">#757575</color>
 
     <!-- Missing colors from error -->
-    <color name="purple_500">#6200EE</color> <!-- Material Design Purple 500 -->
-    <color name="purple_700">#3700B3</color> <!-- Material Design Purple 700 -->
+    <!-- Material Design Purple 500, used for primary color -->
+    <color name="purple_500">#6200EE</color>
+    <!-- Material Design Purple 700, used for primary variant -->
+    <color name="purple_700">#3700B3</color>
+    <!-- White color for text or backgrounds -->
     <color name="white">#FFFFFF</color>
-    <color name="teal_200">#03DAC5</color> <!-- Material Design Teal 200 -->
-    <color name="teal_700">#018786</color> <!-- Material Design Teal 700 -->
+    <!-- Material Design Teal 200, used for secondary color -->
+    <color name="teal_200">#03DAC5</color>
+    <!-- Material Design Teal 700, used for secondary variant -->
+    <color name="teal_700">#018786</color>
+    <!-- Black color for text or other elements -->
     <color name="black">#000000</color>
-
 </resources>

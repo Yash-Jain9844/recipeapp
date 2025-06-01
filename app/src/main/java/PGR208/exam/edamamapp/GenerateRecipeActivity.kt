@@ -16,6 +16,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import PGR208.exam.edamamapp.databinding.ActivityGenerateRecipeBinding
 
+// Interface for Cohere API to generate recipes
 interface CohereService {
     @POST("v1/generate")
     fun generate(
@@ -24,6 +25,7 @@ interface CohereService {
     ): Call<GenerateResponse>
 }
 
+// Data class for the API request body
 data class GenerateRequest(
     val prompt: String,
     val model: String = "command-r-plus",
@@ -35,29 +37,38 @@ data class GenerateRequest(
     val presence_penalty: Double? = null
 )
 
+// Data class for the API response
 data class GenerateResponse(
     val generations: List<Generation>?,
     val message: String?
 )
 
+// Data class for individual generation response
 data class Generation(
     val text: String
 )
 
+// Activity for generating recipes based on user-provided ingredients
 class GenerateRecipeActivity : AppCompatActivity() {
+    // View binding for the generate recipe layout
     private lateinit var binding: ActivityGenerateRecipeBinding
+    // Tag for logging
     private val TAG = "GenerateRecipeActivity"
 
+    // Called when the activity is created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Inflate the layout using view binding
         binding = ActivityGenerateRecipeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set ActionBar title
+        // Set the ActionBar title
         supportActionBar?.title = "Edamam App"
 
+        // Set up generate button click listener
         binding.btnGenerate.setOnClickListener {
             val ingredients = binding.etIngredients.text.toString().trim()
+            // Validate input and generate recipe
             if (ingredients.isNotEmpty()) {
                 generateRecipe(ingredients)
             } else {
@@ -65,6 +76,7 @@ class GenerateRecipeActivity : AppCompatActivity() {
             }
         }
 
+        // Handle "Done" action on the keyboard
         binding.etIngredients.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE ||
                 actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
@@ -82,19 +94,25 @@ class GenerateRecipeActivity : AppCompatActivity() {
         }
     }
 
+    // Handle back button press to reset UI or navigate back
     override fun onBackPressed() {
         if (binding.resultContainer.visibility == View.VISIBLE) {
+            // Reset UI if result is visible
             resetUI()
         } else {
-            super.onBackPressed() // Navigate to MainActivity
+            // Navigate back to MainActivity
+            super.onBackPressed()
         }
     }
 
+    // Reset the UI to initial state
     private fun resetUI() {
+        // Clear input and result fields
         binding.etIngredients.text.clear()
         binding.tvTitle.text = ""
         binding.tvIngredients.text = ""
         binding.tvSteps.text = ""
+        // Show input container and hide result container
         binding.inputContainer.visibility = View.VISIBLE
         binding.resultContainer.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
@@ -105,22 +123,29 @@ class GenerateRecipeActivity : AppCompatActivity() {
         imm.showSoftInput(binding.etIngredients, InputMethodManager.SHOW_IMPLICIT)
     }
 
+    // Generate a recipe using the Cohere API
     private fun generateRecipe(ingredients: String) {
+        // Show progress bar
         binding.progressBar.visibility = View.VISIBLE
+        // Clear previous results
         binding.tvTitle.text = ""
         binding.tvIngredients.text = ""
         binding.tvSteps.text = ""
 
+        // Hide keyboard
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.etIngredients.windowToken, 0)
 
+        // Set up Retrofit for Cohere API
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.cohere.ai/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+        // Create CohereService instance
         val service = retrofit.create(CohereService::class.java)
 
+        // Create prompt for the API
         val prompt = """
             Create a creative and delicious recipe using only these ingredients: $ingredients. 
             Format the recipe with the following sections:
@@ -129,6 +154,7 @@ class GenerateRecipeActivity : AppCompatActivity() {
             Steps: [Numbered steps to prepare the recipe]
         """.trimIndent()
 
+        // Create request object
         val request = GenerateRequest(
             prompt = prompt,
             model = "command-r-plus",
@@ -140,28 +166,36 @@ class GenerateRecipeActivity : AppCompatActivity() {
             presence_penalty = null
         )
 
+        // Log the request
         Log.d(TAG, "Sending request: $request")
 
+        // Make API call
         service.generate("Bearer P5W53s7LOnq5pFwY2LB9B7YxuOToGN828atIGytT", request).enqueue(object : Callback<GenerateResponse> {
             override fun onResponse(call: Call<GenerateResponse>, response: Response<GenerateResponse>) {
+                // Hide progress bar
                 binding.progressBar.visibility = View.GONE
                 if (response.isSuccessful) {
+                    // Extract and parse response
                     val text = response.body()?.generations?.firstOrNull()?.text ?: ""
                     Log.d(TAG, "Response text: $text")
                     val recipe = parseRecipe(text)
+                    // Update UI with recipe details
                     binding.tvTitle.text = recipe["Title"] ?: ""
                     binding.tvIngredients.text = recipe["Ingredients"] ?: ""
                     binding.tvSteps.text = recipe["Steps"] ?: text
 
+                    // Show result container and hide input container
                     binding.inputContainer.visibility = View.GONE
                     binding.resultContainer.visibility = View.VISIBLE
                 } else {
+                    // Handle API error
                     val errorMessage = response.body()?.message ?: response.errorBody()?.string() ?: response.message()
                     Log.e(TAG, "API error: $errorMessage")
                     Toast.makeText(this@GenerateRecipeActivity, "API error: $errorMessage", Toast.LENGTH_LONG).show()
                 }
             }
 
+            // Handle API call failure
             override fun onFailure(call: Call<GenerateResponse>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
                 Log.e(TAG, "Request failed: ${t.message}")
@@ -170,12 +204,14 @@ class GenerateRecipeActivity : AppCompatActivity() {
         })
     }
 
+    // Parse the API response into sections (Title, Ingredients, Steps)
     private fun parseRecipe(text: String): Map<String, String> {
         val sections = listOf("Title:", "Ingredients:", "Steps:")
         val result = mutableMapOf<String, String>()
         var currentSection: String? = null
         val lines = text.split("\n")
 
+        // Iterate through response lines to extract sections
         for (line in lines) {
             val trimmed = line.trim()
             if (sections.any { trimmed.startsWith(it) }) {

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the GenerateRecipeActivity screen, allowing users to input ingredients and view generated recipes -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/colorBackground">
-
+    <!-- Container for input fields and buttons -->
     <LinearLayout
         android:id="@+id/input_container"
         android:layout_width="match_parent"
@@ -12,7 +13,7 @@
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintTop_toTopOf="parent">
-
+        <!-- Title for the recipe generation screen -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,7 +22,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
-
+        <!-- EditText for entering ingredients -->
         <EditText
             android:id="@+id/et_ingredients"
             android:layout_width="match_parent"
@@ -33,7 +34,7 @@
             android:textColorHint="?android:attr/textColorHint"
             android:inputType="text"
             android:imeOptions="actionDone" />
-
+        <!-- Button to trigger recipe generation -->
         <Button
             android:id="@+id/btn_generate"
             android:layout_width="match_parent"
@@ -44,9 +45,8 @@
             android:textColor="?android:attr/textColorPrimaryInverse"
             android:padding="12dp"
             android:textAllCaps="false" />
-
     </LinearLayout>
-
+    <!-- ProgressBar shown during recipe generation -->
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
         app:layout_constraintBottom_toTopOf="@id/result_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
+    <!-- Scrollable container for displaying the generated recipe -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/result_container"
         android:layout_width="match_parent"
@@ -66,13 +66,12 @@
         android:background="?android:attr/colorBackground"
         app:layout_constraintTop_toBottomOf="@id/input_container"
         app:layout_constraintBottom_toBottomOf="parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-
+            <!-- TextView for the recipe title -->
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
@@ -81,7 +80,7 @@
                 android:textStyle="bold"
                 android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="8dp" />
-
+            <!-- Label for the ingredients section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,7 +89,7 @@
                 android:textStyle="bold"
                 android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginTop="8dp" />
-
+            <!-- TextView for listing ingredients -->
             <TextView
                 android:id="@+id/tv_ingredients"
                 android:layout_width="match_parent"
@@ -98,7 +97,7 @@
                 android:textSize="16sp"
                 android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="8dp" />
-
+            <!-- Label for the steps section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,16 +106,13 @@
                 android:textStyle="bold"
                 android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginTop="8dp" />
-
+            <!-- TextView for listing preparation steps -->
             <TextView
                 android:id="@+id/tv_steps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textColor="?android:attr/textColorPrimary" />
-
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

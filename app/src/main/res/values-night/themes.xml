@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Defines the app's theme for dark mode -->
 <resources>
+    <!-- Base application theme for dark mode, extending AppCompat with a dark action bar -->
     <style name="Theme.EdamamApp" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Primary brand color -->
         <item name="colorPrimary">@color/purple_500</item>
+        <!-- Primary color variant for status bar, etc. -->
         <item name="colorPrimaryDark">@color/purple_700</item>
+        <!-- Accent color for buttons and highlights -->
         <item name="colorAccent">@color/teal_200</item>
-        <!-- Background and text colors for dark mode -->
+        <!-- Background color for dark mode -->
         <item name="android:background">@color/main_screen_content_background</item>
+        <!-- Primary text color for dark mode -->
         <item name="android:textColor">@color/text_color_primary</item>
+        <!-- Hint text color for EditText -->
         <item name="android:textColorHint">@color/text_color_hint</item>
+        <!-- Text color for EditText -->
         <item name="android:editTextColor">@color/text_color_primary</item>
-        <!-- ActionBar title text color -->
+        <!-- Custom ActionBar style -->
         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
     </style>
-
+    <!-- Custom style for the ActionBar in dark mode -->
     <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <!-- ActionBar title text color -->
         <item name="titleTextColor">@color/text_color_primary</item>
+        <!-- Reference to ActionBar title text style -->
         <item name="android:titleTextStyle">@style/ActionBarTitleTextStyle</item>
     </style>
-
+    <!-- Style for ActionBar title text -->
     <style name="ActionBarTitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <!-- Title text color for the ActionBar -->
         <item name="android:textColor">@color/text_color_primary</item>
     </style>
 </resources>

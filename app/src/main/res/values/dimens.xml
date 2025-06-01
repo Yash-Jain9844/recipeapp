@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Defines dimension resources for consistent spacing and sizing -->
 <resources>
+    <!-- Padding for main content areas -->
     <dimen name="main_content_padding">16dp</dimen>
+    <!-- Padding for card content areas -->
     <dimen name="card_content_padding">10dp</dimen>
-
 </resources>

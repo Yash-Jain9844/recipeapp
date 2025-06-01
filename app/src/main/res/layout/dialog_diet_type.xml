@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for a dialog to select diet types -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/main_content_padding"
     android:gravity="center">
-
+    <!-- Option for Beef diet type -->
     <TextView
         android:id="@+id/tv_diet_balanced"
         android:layout_width="wrap_content"
@@ -15,7 +16,7 @@
         android:gravity="center"
         android:textSize="30sp"
         android:padding="20dp"/>
-
+    <!-- Option for Chicken diet type -->
     <TextView
         android:id="@+id/tv_diet_high_fiber"
         android:layout_width="wrap_content"
@@ -25,7 +26,7 @@
         android:gravity="center"
         android:textSize="30sp"
         android:padding="20dp"/>
-
+    <!-- Option for Seafood diet type -->
     <TextView
         android:id="@+id/tv_diet_high_protein"
         android:layout_width="wrap_content"
@@ -35,7 +36,7 @@
         android:gravity="center"
         android:textSize="30sp"
         android:padding="20dp"/>
-
+    <!-- Option for Vegetarian diet type -->
     <TextView
         android:id="@+id/tv_diet_low_carb"
         android:layout_width="wrap_content"
@@ -45,7 +46,7 @@
         android:gravity="center"
         android:textSize="30sp"
         android:padding="20dp"/>
-
+    <!-- Option for Dessert diet type -->
     <TextView
         android:id="@+id/tv_diet_low_fat"
         android:layout_width="wrap_content"

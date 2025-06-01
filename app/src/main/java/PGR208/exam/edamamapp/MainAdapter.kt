@@ -16,25 +16,32 @@ import android.annotation.SuppressLint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+// Adapter for displaying search results in a RecyclerView
 class MainAdapter(
-    private val mealsList: MutableList<Meal>,
-    val context: Context,
-    val favoritesDao: FavoritesDao,
-    val settingsDao: SettingsDao
+    private val mealsList: MutableList<Meal>, // List of meals to display
+    val context: Context, // Context for starting intents and loading images
+    val favoritesDao: FavoritesDao, // DAO for favorites database operations
+    val settingsDao: SettingsDao // DAO for settings database operations
 ) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
+    // ViewHolder for individual meal items
     inner class MainViewHolder(private val itemBinding: RecipeItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+        // References to UI elements
         val ibFavorite = itemBinding.ibFavorite
         val btnSelectRecipe = itemBinding.btnSelectRecipe
-        val ibShare = itemBinding.ibShare // Added share button
+        val ibShare = itemBinding.ibShare // Share button
 
+        // Bind data to the ViewHolder
         fun bindItem(meal: Meal) {
+            // Load meal image using Glide
             Glide.with(context).load(meal.strMealThumb).into(itemBinding.ivDish)
+            // Set meal details
             itemBinding.tvTitle.text = meal.strMeal
             itemBinding.tvDietLabel1.text = meal.strCategory
             itemBinding.tvHealthLabel1.text = meal.strArea
             itemBinding.tvMealLabel.text = meal.strCategory
 
+            // Check if meal is a favorite and set icon
             GlobalScope.launch {
                 val isFavorite = favoritesDao.isFavorite(meal.strMeal)
                 itemBinding.ibFavorite.setImageResource(
@@ -44,22 +51,24 @@ class MainAdapter(
         }
     }
 
+    // Create a new ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         return MainViewHolder(RecipeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
+    // Bind data to the ViewHolder at the specified position
     @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val meal = mealsList[position]
         holder.bindItem(meal)
 
+        // Handle favorite button click to add/remove from favorites
         holder.ibFavorite.setOnClickListener {
             val recipeLabel = meal.strMeal
-
             GlobalScope.launch {
                 val isFav = favoritesDao.isFavorite(recipeLabel)
-
                 if (!isFav) {
+                    // Add meal to favorites
                     favoritesDao.insert(
                         FavoritesEntity(
                             label = recipeLabel,
@@ -72,19 +81,22 @@ class MainAdapter(
                     )
                     holder.ibFavorite.setImageResource(R.drawable.ic_favorite_filled)
                 } else {
+                    // Remove meal from favorites
                     favoritesDao.delete(FavoritesEntity(label = recipeLabel))
                     holder.ibFavorite.setImageResource(R.drawable.ic_favorite_border)
                 }
             }
         }
 
+        // Handle select recipe button to open recipe URL
         holder.btnSelectRecipe.setOnClickListener {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(meal.strSource ?: ""))
             context.startActivity(browserIntent)
         }
 
-        // Share button click handler
+        // Handle share button click
         holder.ibShare.setOnClickListener {
+            // Create share intent with meal details
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_SUBJECT, "Check out this recipe: ${meal.strMeal}")
@@ -94,6 +106,7 @@ class MainAdapter(
         }
     }
 
+    // Return the number of items in the list
     override fun getItemCount(): Int {
         return mealsList.size
     }

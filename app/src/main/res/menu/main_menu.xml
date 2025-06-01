@@ -1,4 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Menu resource for the MainActivity's ActionBar -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Menu item to navigate to GenerateRecipeActivity -->
     <item
         android:id="@+id/action_generate_recipe"
         android:title="Generate Recipe"

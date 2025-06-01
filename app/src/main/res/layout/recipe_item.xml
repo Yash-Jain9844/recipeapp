@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for a single recipe item displayed in RecyclerView lists -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp">
-
+    <!-- ImageView for displaying the recipe thumbnail -->
     <ImageView
         android:id="@+id/iv_dish"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop" />
-
+    <!-- Container for recipe details -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
         android:paddingStart="8dp">
-
+        <!-- TextView for the recipe title -->
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
@@ -25,36 +26,35 @@
             android:textColor="@color/text_color_primary"
             android:textSize="16sp"
             android:textStyle="bold" />
-
+        <!-- TextView for the diet label -->
         <TextView
             android:id="@+id/tv_diet_label_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/text_color_primary"
             android:textSize="14sp" />
-
+        <!-- TextView for the health label -->
         <TextView
             android:id="@+id/tv_health_label_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/text_color_primary"
             android:textSize="14sp" />
-
+        <!-- TextView for the meal type -->
         <TextView
             android:id="@+id/tv_meal_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/text_color_primary"
             android:textSize="14sp" />
-
     </LinearLayout>
-
+    <!-- Container for action buttons -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
-
+        <!-- ImageButton for toggling favorite status -->
         <ImageButton
             android:id="@+id/ib_favorite"
             android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
             android:src="@drawable/ic_favorite_filled"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:tint="@color/text_color_primary" />
-
+        <!-- ImageButton for sharing the recipe -->
         <ImageButton
             android:id="@+id/ib_share"
             android:layout_width="wrap_content"
@@ -71,13 +71,11 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:tint="@color/text_color_primary"
             android:contentDescription="Share recipe" />
-
+        <!-- Button to select/view the recipe details -->
         <Button
             android:id="@+id/btn_select_recipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select" />
-
     </LinearLayout>
-
 </LinearLayout>

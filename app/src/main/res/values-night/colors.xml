@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Defines color resources for dark mode -->
 <resources>
-    <!-- Background color for dark mode -->
+    <!-- Background color for main screens in dark mode -->
     <color name="main_screen_content_background">#121212</color>
-    <!-- Text color for dark mode -->
+    <!-- Primary text color for dark mode -->
     <color name="text_color_primary">#E0E0E0</color>
-    <!-- Hint color for EditText in dark mode -->
+    <!-- Hint text color for EditText in dark mode -->
     <color name="text_color_hint">#B0B0B0</color>
+    <!-- Accent color for buttons and highlights in dark mode -->
     <color name="colorAccent">#6200EE</color>
 </resources>

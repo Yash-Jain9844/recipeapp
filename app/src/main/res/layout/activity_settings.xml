@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the SettingsActivity screen, allowing users to configure app preferences -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +9,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@color/main_screen_content_background">
-
+    <!-- Title for the settings screen -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,15 +19,17 @@
         android:textStyle="bold"
         android:textColor="@color/text_color_primary"
         android:layout_marginBottom="16dp" />
-
+    <!-- Label for desired diet input -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Desired Diet"
         android:textSize="16sp"
         android:textColor="@color/text_color_primary"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible"/>
 
+    <!-- EditText for entering desired diet preference -->
     <EditText
         android:id="@+id/et_desired_diet"
         android:layout_width="match_parent"
@@ -34,16 +37,19 @@
         android:hint="Enter desired diet"
         android:textColor="@color/text_color_primary"
         android:textColorHint="@color/text_color_hint"
-        android:layout_marginBottom="16dp" />
-
+        android:layout_marginBottom="16dp"
+        android:visibility="invisible"/>
+    <!-- Label for meal priority input -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Meal Priority"
         android:textSize="16sp"
         android:textColor="@color/text_color_primary"
-        android:layout_marginBottom="8dp" />
-
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible"
+        />
+    <!-- EditText for entering meal priority preference -->
     <EditText
         android:id="@+id/et_meal_priority"
         android:layout_width="match_parent"
@@ -51,16 +57,18 @@
         android:hint="Enter meal priority"
         android:textColor="@color/text_color_primary"
         android:textColorHint="@color/text_color_hint"
-        android:layout_marginBottom="16dp" />
-
+        android:layout_marginBottom="16dp"
+        android:visibility="invisible"/>
+    <!-- Label for max search history items input -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Max Search History Items"
         android:textSize="16sp"
         android:textColor="@color/text_color_primary"
-        android:layout_marginBottom="8dp" />
-
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible"/>
+    <!-- EditText for entering maximum number of search history items -->
     <EditText
         android:id="@+id/et_max_search_history_items"
         android:layout_width="match_parent"
@@ -69,26 +77,27 @@
         android:inputType="number"
         android:textColor="@color/text_color_primary"
         android:textColorHint="@color/text_color_hint"
-        android:layout_marginBottom="16dp" />
-
+        android:layout_marginBottom="16dp"
+        android:visibility="invisible"/>
+    <!-- Label for theme selection -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Theme"
         android:textSize="16sp"
         android:textColor="@color/text_color_primary"
-        android:layout_marginBottom="8dp" />
-
+        android:layout_marginBottom="8dp"
+       />
+    <!-- Spinner for selecting app theme (Light, Dark, System) -->
     <Spinner
         android:id="@+id/spinner_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp" />
-
+    <!-- Button to save settings -->
     <Button
         android:id="@+id/btn_save_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save Settings" />
-
 </LinearLayout>

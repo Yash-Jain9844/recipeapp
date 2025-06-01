@@ -9,29 +9,33 @@ import PGR208.exam.edamamapp.Database_settings.SettingsDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+// Application class to initialize Room databases and apply theme preferences
 class DatabaseApp : Application() {
-
+    // Database instances for favorites, search history, and settings
     lateinit var dbFavorites: FavoritesDatabase
     lateinit var dbSearchHistory: SearchHistoryDatabase
     lateinit var dbSettings: SettingsDatabase
 
+    // Called when the application is created
     override fun onCreate() {
         super.onCreate()
 
+        // Initialize favorites database
         dbFavorites = FavoritesDatabase.getInstance(this)
+        // Initialize search history database
         dbSearchHistory = Room.databaseBuilder(
             this,
             SearchHistoryDatabase::class.java,
             "search_history_database"
         ).build()
-
+        // Initialize settings database
         dbSettings = Room.databaseBuilder(
             this,
             SettingsDatabase::class.java,
             "settings_database"
         ).build()
 
-        // Apply dark theme by default if no preference is set
+        // Apply theme preference from settings (default to dark if none set)
         GlobalScope.launch {
             val themePreference = dbSettings.settingsDao().fetchThemePreference() ?: "dark"
             when (themePreference) {

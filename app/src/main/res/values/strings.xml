@@ -1,9 +1,17 @@
+<!-- Defines string resources used in the app -->
 <resources>
+    <!-- App name displayed in the launcher and UI -->
     <string name="app_name">EdamamApp</string>
+    <!-- Label for the search history button -->
     <string name="search_history">Search History</string>
+    <!-- Label for the settings button -->
     <string name="settings">Settings</string>
+    <!-- Label for the favorites button -->
     <string name="favorites">Favorites</string>
+    <!-- Placeholder for name fields -->
     <string name="name">Name...</string>
+    <!-- Label for select buttons -->
     <string name="select">Select</string>
+    <!-- Label for search buttons -->
     <string name="search">Search</string>
 </resources>

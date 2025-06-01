@@ -7,21 +7,25 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
+// Room database for storing favorite recipes
 @Database(entities = [FavoritesEntity::class], version = 2)
 abstract class FavoritesDatabase : RoomDatabase() {
 
+    // Provide access to FavoritesDao
     abstract fun favoritesDao(): FavoritesDao
 
+    // Companion object for singleton instance
     companion object {
 
         @Volatile
         private var INSTANCE: FavoritesDatabase? = null
 
+        // Get or create a database instance
         fun getInstance(context: Context): FavoritesDatabase {
             synchronized(this) {
                 var instance = INSTANCE
-
                 if (instance == null) {
+                    // Build database with migration support
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         FavoritesDatabase::class.java,
@@ -35,6 +39,7 @@ abstract class FavoritesDatabase : RoomDatabase() {
             }
         }
 
+        // Migration from version 1 to 2, adding new columns
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("""
